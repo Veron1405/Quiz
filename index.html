@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<h<!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <title>Quiz</title>
+    </head>
+
+    <body>
+        <div class="quiz-container">
+            <h1>Quiz sobre o Ensino Médio</h1>
+            <div id="image-container">
+                <img id="question-image" src="" alt="Imagem da pergunta">
+            </div>
+            <p id="question"></p>
+            <div id="options" class="options"></div>
+            <button id="next-btn" class="next-btn"></button>
+            <p id="score">Pontuação: 0</p>
+        </div>
+    </body>
+
+    </html>
+
+    <script>
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const nextButton = document.getElementById('next-btn');
+        const scoreElement = document.getElementById('score');
+        const questionImageElement = document.getElementById('question-image');
+
+        const quizData = [
+            {
+                question: "Qual é a capital da França?",
+                image: "paris.jpg",
+                options: ["Madrid", "Berlim", "Paris", "Londres"],
+                answer: "Paris"
+            },
+            {
+                question: "Qual é o maior planeta do sistema solar?",
+                image: "jupiter.jpg",
+                options: ["Marte", "Vênus", "Saturno", "Júpiter"],
+                answer: "Júpiter"
+            },
+            {
+                question: "Qual é o maior animal terreste do mundo?",
+                image: "selva.jpg",
+                options: ["Elefante", "Leão", "Bufalo", "Hipopotamo"],
+                answer: "Elefante"
+            },
+            {
+                question: "Qual é o maior animal marinho do mundo?",
+                image: "mar.jpg",
+                options: ["Cachalote", "Tubarão-Branco", "Baleia-azul", "Tubarão-baleia"],
+                answer: "Baleia-azul"
+            },
+            {
+                question: "Qual o país mais populoso do mundo?",
+                image: "sla.jpg",
+                options: ["EUA", "Índia", "China", "Russia"],
+                answer: "Índia"
+            },
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function showQuestion(question) {
+            questionElement.textContent = question.question;
+
+            questionImageElement.src = question.image;
+            questionImageElement.alt = `Imagem: ${question.question}`;
+
+            optionsElement.innerHTML = '';
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('option-btn');
+                button.addEventListener('click', () => checkAnswer(option));
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const currentQuestion = quizData[currentQuestionIndex];
+            if (selectedOption === currentQuestion.answer) {
+                score += 10;
+                scoreElement.textContent = `Pontuação: ${score}`;
+                console.log("Resposta correta!");
+            } else {
+                console.log("Resposta incorreta!");
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                showQuestion(quizData[currentQuestionIndex]);
+            } else {
+                questionElement.textContent = "Quiz finalizado!";
+                optionsElement.innerHTML = '';
+                nextButton.disabled = true;
+            }
+        }
+
+        nextButton.addEventListener('click', () => {
+            if (!nextButton.disabled) {
+                showQuestion(quizData[currentQuestionIndex]);
+            }
+        });
+
+        showQuestion(quizData[currentQuestionIndex]);
+
+
+    </script>
+    </body>
+
+</html>
